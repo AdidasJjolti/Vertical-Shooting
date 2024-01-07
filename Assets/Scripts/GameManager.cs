@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     //public GameObject[] enemyObjects;       // Instantiate 함수를 사용하여 적을 생성할 때 게임 오브젝트를 받을 변수
     public string[] enemyObjs;                // 풀링으로 적을 생성할 때 받아올 적의 타입을 저장할 배열 변수
@@ -26,8 +26,10 @@ public class GameManager : MonoBehaviour
     public bool spawnEnd;
 
 
-    void Awake()
+    public override void Awake()
     {
+        Debug.Log("GameManager Awake 실행");
+        base.Awake();                                                                   // Singleton 클래스의 Awake 실행
         enemyObjs = new string[] { "EnemyS", "EnemyM", "EnemyL", "EnemyB" };            // enemyObjs의 배열을 ObjectManager에서 지정한 적의 타입 4개로 초기화, MakeObj함수의 매개 변수로 타입을 받아와야 함
         spawnList = new List<Spawn>();
         ReadSpawnFile();
@@ -46,7 +48,7 @@ public class GameManager : MonoBehaviour
         while(stringReader != null)                                                   // 읽어올 텍스트 파일이 있으면 실행
         {
             string line = stringReader.ReadLine();                                    // 텍스트 데이터를 한 줄씩 반환
-            Debug.Log(line);
+            //Debug.Log(line);
 
             if (line == null)                                                         // 더 이상 읽어올 줄(마지막 줄 도달)이 없으면 실행 중단
             {
